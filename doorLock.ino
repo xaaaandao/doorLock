@@ -13,11 +13,13 @@
 /* Define relacionada ao RFID */
 #define RST_PIN 9
 #define SS_PIN 10
-#define TIMER_READ_RFID 3000
 
 /* Define relacionada a trava */
-#define LOCK_PIN 2
+#define LOCK 2
 #define TIMER_LOCK 5000
+
+/* Definindo relacionado a botão */
+#define BUTTON_PIN 3
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 Led led;  /* Variável global para poder invocar os métodos dessa classe */
@@ -35,13 +37,20 @@ void setup(){
 
   /* Verifica se tem erro no RFID */
   while(led.errorRFID())
-    //led.blinkLED();
+    led.blinkLED();
 
-  /* Inicializa o relé */
-  pinMode(LOCK_PIN, OUTPUT);
+  /* Para o relé */
+  pinMode(LOCK, OUTPUT);
+
+  /* Inicializa o botão */
+  pinMode(BUTTON_PIN, INPUT);
 }
 
 void loop(){
+  int buttonState = 0;
+  /* Fica lendo o botão */
+  buttonState = digitalRead(BUTTON_PIN);
+  
   if (!mfrc522.PICC_IsNewCardPresent())
     return;
 
@@ -66,31 +75,30 @@ void loop(){
 
   /* Removo o primeiro character do id que é uma espaço em branco */
   id = id.substring(1, id.length());
-
-  /* Verifico se o cartão é válido */
-  bool validCard = false;
   
-  /* Verifica se o id que foi passado por parâmetro é igual ao que está no vetor */
-  if(cards.cardIsValid(id)){
+  /* Verifica se o id que foi passado por parâmetro é igual ao que está no vetor ou se o botão foi apertado */
+  if(cards.cardIsValid(id) || buttonState == HIGH){
 
     /* Se tem energia libera porta */
     /* Se sim, libera a porta */
-    /* Libero a tranca, espero 5 segundos e fecha depois */
-    digitalWrite(LOCK_PIN, HIGH);
-    delay(TIMER_LOCK);           
-    digitalWrite(LOCK_PIN, LOW);
+    Serial.print("É válido!!!\n");
 
-    validCard = true;
-    led.countBlinkLED(validCard);
+    /* Libero a tranca, espero 5 segundos e fecha depois */
+    digitalWrite(LOCK, HIGH);
+    delay(TIMER_LOCK);           
+    digitalWrite(LOCK, LOW);
+
+    led.countBlinkLED(CARDVALID);
     
   } else {
-    
     /* Se não tem energia fica fechado */
     /* Caso contrário, nega acesso a porta */
-    led.countBlinkLED(validCard);
-    
+    Serial.print("Não é válido!!!\n");   
+
+    led.countBlinkLED(CARDNOTVALID);
+
   } 
 
   /* Delay para não ficar lendo várias vezes */
-  delay(TIMER_READ_RFID);
+  delay(3000);
 }
