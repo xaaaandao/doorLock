@@ -23,9 +23,21 @@
 */
 #include <WString.h>
 
-class Cards{
+/* Biblioteca relacionada ao leitor RFID */
+#include <MFRC522.h>
+
+/* Define relacionada ao RFID */
+#define RST_PIN 9
+#define SS_PIN 10
+#define TIMER_READ_RFID 3000
+
+class RFID{
 	public:
     /* Protótipo dos métodos */
+    void initializeRFID();
+    bool isNewCardPresent();
+    bool readCardSerial();
+    String getIdCard();
 		bool cardIsValid(String currentCardId);
 };
 

@@ -21,7 +21,7 @@
 /* Biblioteca para ter acesso ao enum da classe MFRC522 */
 #include <MFRC522.h>
 
-class Led{
+class LED{
 	public:
     /* Protótipo dos métodos */
 		void initializeLED(void);

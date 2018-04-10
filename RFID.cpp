@@ -1,6 +1,9 @@
-#include "Cards.hpp"
+#include "RFID.hpp"
 
 using namespace std;
+
+/* Definindo o leitor de RFID */
+MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 /**
 * Autor: Alexandre Yuji Kajihara
@@ -9,6 +12,39 @@ using namespace std;
 * Data de criação: 28/02/2018
 * Data de atualização: 28/02/2018
 **/
+
+void RFID :: initializeRFID(){
+  /* Inicializa o RFID */
+  mfrc522.PCD_Init();
+}   
+
+bool RFID :: isNewCardPresent(){
+  return mfrc522.PICC_IsNewCardPresent();
+}
+
+bool RFID :: readCardSerial(){
+  return mfrc522.PICC_ReadCardSerial();
+}
+
+String RFID :: getIdCard(){
+  /*
+    Armazenar o ID do cartão em uma String
+    https://www.filipeflop.com/blog/controle-acesso-leitor-rfid-arduino/
+  */
+  String id = "";
+  for (byte i = 0; i < mfrc522.uid.size; i++){
+     id.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " "));
+     id.concat(String(mfrc522.uid.uidByte[i], HEX));
+  }
+ 
+  /* Coloco o id com letras maiuscúlas */
+  id.toUpperCase();
+
+  /* Removo o primeiro character do id que é uma espaço em branco */
+  id = id.substring(1, id.length());
+
+  return id;
+}
 
 /**
 * O método cardIsValid(String currentCardId) recebe uma string, e conteúdo dela é o id do cartão ou da tag.
@@ -19,7 +55,7 @@ using namespace std;
 */
 
 /* Para declarar função em C++ é necessário por o nome da classe, que no caso é Cards */
-bool Cards :: cardIsValid(String currentCardId){
+bool RFID :: cardIsValid(String currentCardId){
 	/* Todos os id's dos cartões */
   String allCardId[] = {};/* Substituir pelo ID do cartão */
   

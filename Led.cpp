@@ -1,4 +1,4 @@
-#include "Led.hpp"
+#include "LED.hpp"
 
 /**
 * Autor: Alexandre Yuji Kajihara
@@ -13,7 +13,7 @@
 * @param void, não tem nenhum parâmetro.
 * @return void, não retorna nada.
 */
-void Led :: initializeLED(void){
+void LED :: initializeLED(void){
 	pinMode(LED_RED, OUTPUT);  	
   pinMode(LED_GREEN, OUTPUT);   
 }
@@ -23,7 +23,7 @@ void Led :: initializeLED(void){
 * @param pinLed, que é um inteiro e recebe como parâmetro o valor do pino a qual o led está ligado no arduino.
 * @return void, não retorna nada.
 */
-void Led :: onLED(int pinLed){
+void LED :: onLED(int pinLed){
 	digitalWrite(pinLed, HIGH);
 	delay(DELAYLED);
 }
@@ -33,7 +33,7 @@ void Led :: onLED(int pinLed){
 * @param pinLed, que é um inteiro e recebe como parâmetro o valor do pino a qual o led está ligado no arduino.
 * @return void, não retorna nada.
 */
-void Led :: offLED(int pinLed){
+void LED :: offLED(int pinLed){
 	digitalWrite(pinLed, LOW);
 	delay(DELAYLED);
 }
@@ -43,9 +43,9 @@ void Led :: offLED(int pinLed){
 * @param pinLed, que é um inteiro e recebe como parâmetro o valor do pino a qual o led está ligado no arduino.
 * @return void, não retorna nada.
 */
-void Led :: blinkLED(int pinLed){
-  Led :: onLED(pinLed);
-  Led :: offLED(pinLed);
+void LED :: blinkLED(int pinLed){
+  LED :: onLED(pinLed);
+  LED :: offLED(pinLed);
 }
 
 /**
@@ -53,14 +53,14 @@ void Led :: blinkLED(int pinLed){
 * @param valid, que é um booleano e recebe como parâmetro verdadeiro caso o cartão seja válido e caso contrário falso.
 * @return void, não retorna nada.
 */
-void Led :: countBlinkLED(bool valid){
+void LED :: countBlinkLED(bool valid){
   /* 4, porque o led indica que o cartão é inválido está na porta 4 */
   int pinLed = 4;
   for (int i = 0; i < BLINKLED; i++){
     /* 5, porque o led indica que o cartão válido e está na porta 4 */
     if(valid)
       pinLed = 5;
-    Led :: blinkLED(pinLed);
+    LED :: blinkLED(pinLed);
   }
 }
 
@@ -69,7 +69,7 @@ void Led :: countBlinkLED(bool valid){
 * @param countBlink, que é um inteiro com a quantidade de vezes que o LED irá piscar.
 * @return true ou false, true quando existe algum erro no RFID e false quando não existe erro.
 */
-bool Led :: errorRFID(void){
+bool LED :: errorRFID(void){
   /* Para acessar um enum de um classe */
   MFRC522::PCD_Register version = MFRC522::PCD_Register::VersionReg;
   MFRC522 mfrc522;
