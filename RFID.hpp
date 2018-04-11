@@ -7,8 +7,8 @@
 * Além disso, contém a inclusão de outras bibliotecas, como o Arduino.h que permite utilizar variáveis do tipo String.
 * Já a biblioteca, WString.h permite utilizar operações para manipular as Strings, como comparar duas strings, transformar as letras
 * minúscula em maiúscula, pegar uma substring dentro de uma string e o tamanho da string.
-* Data de criação: 28/02/2018
-* Data de atualização: 28/02/2018
+* Data de criação: 02/03/2018
+* Data de atualização: 11/04/2018
 **/
 
 /* 
@@ -34,11 +34,12 @@
 class RFID{
 	public:
     /* Protótipo dos métodos */
-    void initializeRFID();
-    bool isNewCardPresent();
-    bool readCardSerial();
-    String getIdCard();
+    void initializeRFID(void);
+    bool isNewCardPresent(void);
+    bool readCardSerial(void);
+    String getIdCard(void);
 		bool cardIsValid(String currentCardId);
+    bool errorRFID(void);
 };
 
 #endif /* CARDS_H */

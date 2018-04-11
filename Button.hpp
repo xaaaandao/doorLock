@@ -3,14 +3,16 @@
 
 /**
 * Autor: Alexandre Yuji Kajihara
-* Descrição: 
-* Data de criação: 02/03/2018
-* Data de atualização: 02/03/2018
+* Descrição: definição de alguns valores necessários para se utilizar o botão,
+* a inclusão de biblioteca, para poder utilizar o pinMode, etc. e os protótipos dos métodos.
+* Data de criação: 10/04/2018
+* Data de atualização: 11/04/2018
 **/
 
+/* Biblioteca necessária para utilizar os métodos pinMode(), digitalRead() */
 #include <Arduino.h>
 
-/* Definindo relacionado a botão */
+/* Definindo valores relacionado ao botão */
 #define BUTTON_PIN 3
 
 class Button{

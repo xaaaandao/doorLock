@@ -5,7 +5,7 @@
 * Descrição: implementações dos métodos que foram definidos como protótipos no arquivo Led.hpp. Esses métodos estão relacionados as operações 
 * que são realizadas pelo LED.
 * Data de criação: 02/03/2018
-* Data de atualização: 02/03/2018
+* Data de atualização: 11/04/2018
 **/
 
 /**
@@ -63,18 +63,3 @@ void LED :: countBlinkLED(bool valid){
     LED :: blinkLED(pinLed);
   }
 }
-
-/**
-* O método errorRFID(void), verifica se existe algum erro no RFID, caso exista retorna true e false caso não exista.
-* @param countBlink, que é um inteiro com a quantidade de vezes que o LED irá piscar.
-* @return true ou false, true quando existe algum erro no RFID e false quando não existe erro.
-*/
-bool LED :: errorRFID(void){
-  /* Para acessar um enum de um classe */
-  MFRC522::PCD_Register version = MFRC522::PCD_Register::VersionReg;
-  MFRC522 mfrc522;
-  byte v = mfrc522.PCD_ReadRegister(version);
-  if ((v == 0x00) || (v == 0xFF))
-    return true;
-  return false;
-}  

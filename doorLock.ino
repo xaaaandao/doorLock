@@ -10,57 +10,62 @@
 /* Biblioteca com operações relacionadas ao botão */
 #include "Button.hpp"
 
-/* Definindo o LED */
+/* Definindo as variáveis globais para evitar, de declarar várias vezes */
 LED led; 
 RFID rfid;
 Rele rele;
 Button button;
 
 void setup(){
+  /* Inicializa o RFID */
   rfid.initializeRFID();
 
   /* Inicializa o LED */
   led.initializeLED();
 
   /* Verifica se tem erro no RFID */
-  while(led.errorRFID())
+  while(rfid.errorRFID())
     led.blinkLED(LED_RED);
 
+  /* Inicializa o relé */
   rele.initializeRele();
 
+  /* Inicializa o botão */
   button.initializeButton();
 }
 
 void loop(){
   /* Fica lendo o botão */
   int buttonState = button.getValueButton();
-  
+
+  /* Verifica se não é novo cartão presente */
   if(!rfid.isNewCardPresent())
     return;
 
+  /* Verifica se está lendo o cartão serial */
   if (!rfid.readCardSerial())
     return;
 
+  /* Pega o ID do cartão RFID */
   String id = rfid.getIdCard();
   bool validCard = false;
   
-  /* Verifica se o id que foi passado por parâmetro é igual ao que está no vetor */
+  /* Verifica se o id que foi passado por parâmetro é igual ao que está no vetor ou se o botão foi presionado */
   if(rfid.cardIsValid(id) || buttonState == HIGH){
 
-    /* Se tem energia libera porta */
-    /* Se sim, libera a porta */
-    /* Libero a tranca, espero 5 segundos e fecha depois */
+    /* Se é válido libera a porta */
+    /* Ativo o relé, espero 5 segundos e depois desativo o relé */
     rele.turnOnRele();
     delay(TIMER_LOCK);           
     rele.turnOffRele();  
-
+    
+    /* Pisca o LED sinalizando que o cartão é válido */
     validCard = true;
     led.countBlinkLED(validCard);
     
   } else {
     
-    /* Se não tem energia fica fechado */
-    /* Caso contrário, nega acesso a porta */
+    /* Se não é válido, pisca o LED para mostrar que o cartão é inválido */
     led.countBlinkLED(validCard);
     
   } 

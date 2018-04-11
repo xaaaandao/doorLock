@@ -3,9 +3,10 @@
 
 /**
 * Autor: Alexandre Yuji Kajihara
-* Descrição: 
-* Data de criação: 02/03/2018
-* Data de atualização: 02/03/2018
+* Descrição: definição de alguns valores necessários para se utilizar o relé,
+* a inclusão de biblioteca, para poder utilizar o pinMode, etc. e os protótipos dos métodos.
+* Data de criação: 10/04/2018
+* Data de atualização: 11/04/2018
 **/
 
 /* 
@@ -21,9 +22,9 @@
 class Rele{
 	public:
     /* Protótipo dos métodos */
-    void initializeRele();
-    void turnOnRele();
-    void turnOffRele();
+    void initializeRele(void);
+    void turnOnRele(void);
+    void turnOffRele(void);
 };
 
 #endif /* RELE_H */

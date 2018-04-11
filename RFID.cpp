@@ -7,26 +7,46 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 /**
 * Autor: Alexandre Yuji Kajihara
-* Descrição: implementações dos métodos que foram definidos como protótipos no arquivo Cards.hpp. Esses métodos estão relacionados as operações 
-* que são realizadas pelo cartão e tag RFID.
-* Data de criação: 28/02/2018
-* Data de atualização: 28/02/2018
+* Descrição: implementações dos métodos que foram definidos como protótipos no arquivo RFID.hpp.
+* Esses métodos estão relacionados as operações que são realizadas pelo cartão, as tags e o leitor de RFID.
+* Data de criação: 10/04/2018
+* Data de atualização: 11/04/2018
 **/
 
-void RFID :: initializeRFID(){
+/**
+* O método initializeRFID(void), basicamente inicializa o leitor de RFID na porta que foi definida.
+* @param void, não tem nenhum parâmetro.
+* @return void, não retorna nada.
+*/
+void RFID :: initializeRFID(void){
   /* Inicializa o RFID */
   mfrc522.PCD_Init();
 }   
 
-bool RFID :: isNewCardPresent(){
+/**
+* O método isNewCardPresent(void), basicamente verifica se é ou não um novo cartão presente.
+* @param void, não tem nenhum parâmetro.
+* @return mfrc522.PICC_IsNewCardPresent(), que é true caso seja um novo cartão presente ou false se não for um novo cartão.
+*/
+bool RFID :: isNewCardPresent(void){
   return mfrc522.PICC_IsNewCardPresent();
 }
 
-bool RFID :: readCardSerial(){
+/**
+* O método readCardSerial(void), basicamente verifica se está ou não lendo um cartão serial.
+* @param void, não tem nenhum parâmetro.
+* @return mfrc522.readCardSerial(), que é true caso esteja lendo um cartão na serial ou false caso não esteja lendo um cartão.
+*/
+bool RFID :: readCardSerial(void){
   return mfrc522.PICC_ReadCardSerial();
 }
 
-String RFID :: getIdCard(){
+/**
+* O método getIdCard(void), retorna em uma string o ID do cartão que foi lido pelo leitor de RFID.
+* @param void, não tem nenhum parâmetro.
+* @return id, que é uma string com o ID do cartão.
+*/
+String RFID :: getIdCard(void){
   /*
     Armazenar o ID do cartão em uma String
     https://www.filipeflop.com/blog/controle-acesso-leitor-rfid-arduino/
@@ -54,7 +74,7 @@ String RFID :: getIdCard(){
 * @return true ou false, true quando o id recebido por parâmetro é válido e false quando id não é válido.
 */
 
-/* Para declarar função em C++ é necessário por o nome da classe, que no caso é Cards */
+/* Para declarar função em C++ é necessário por o nome da classe, que no caso é RFID */
 bool RFID :: cardIsValid(String currentCardId){
 	/* Todos os id's dos cartões */
   String allCardId[] = {};/* Substituir pelo ID do cartão */
@@ -69,3 +89,18 @@ bool RFID :: cardIsValid(String currentCardId){
   /* Caso não encontre o id no vetor, retorna falso */
 	return false;
 }		
+
+/**
+* O método errorRFID(void), verifica se existe algum erro no RFID, caso exista retorna true e false caso não exista.
+* @param countBlink, que é um inteiro com a quantidade de vezes que o LED irá piscar.
+* @return true ou false, true quando existe algum erro no RFID e false quando não existe erro.
+*/
+bool RFID :: errorRFID(void){
+  /* Para acessar um enum de um classe */
+  MFRC522::PCD_Register version = MFRC522::PCD_Register::VersionReg;
+  MFRC522 mfrc522;
+  byte v = mfrc522.PCD_ReadRegister(version);
+  if ((v == 0x00) || (v == 0xFF))
+    return true;
+  return false;
+}  

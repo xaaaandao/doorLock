@@ -10,6 +10,7 @@
 * Data de atualização: 02/03/2018
 **/
 
+/* Definicão de alguns valores para utilizar */
 #define LED_RED 5         /* LED que está na porta 5 */
 #define LED_GREEN 4         /* LED que está na porta 4 */
 #define DELAYLED 100       /* Tempo de delay do LED */
@@ -29,7 +30,6 @@ class LED{
     void offLED(int);
     void blinkLED(int);
     void countBlinkLED(bool);
-		bool errorRFID(void);
 };
 
 #endif /* LED_H */
